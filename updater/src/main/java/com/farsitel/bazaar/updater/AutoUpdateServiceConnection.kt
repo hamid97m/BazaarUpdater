@@ -21,14 +21,13 @@ internal class AutoUpdateServiceConnection(
             val service = IAutoUpdateCheckService.Stub.asInterface(boundService)
             scope.launch(Dispatchers.IO) {
                 try {
-                    val isAutoUpdateEnabled =
-                        if (bazaarVersionCode >= BAZAAR_CODE_AUTO_UPDATE_SUPPORTED) {
-                            service?.isAutoUpdateEnabled(packageName)
+                    if (bazaarVersionCode >= BAZAAR_CODE_AUTO_UPDATE_SUPPORTED) {
+                        val isAutoUpdateEnabled = service?.isAutoUpdateEnabled(packageName)
+                        if (isAutoUpdateEnabled != null) {
+                            onResult(isAutoUpdateEnabled)
                         } else {
-                            null
+                            onError(UnknownException())
                         }
-                    if (isAutoUpdateEnabled != null) {
-                        onResult(isAutoUpdateEnabled)
                     } else {
                         onError(BazaarIsNotUpdate())
                     }
