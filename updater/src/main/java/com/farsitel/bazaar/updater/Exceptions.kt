@@ -12,6 +12,11 @@ public class BazaarIsNotUpdate(
             " $BAZAAR_CODE_AUTO_UPDATE_SUPPORTED and above"
 ) : RuntimeException()
 
+public class DownloadedUpdateCheckNotSupported(
+    override val message: String = "This feature is supported in bazaar version" +
+            " $BAZAAR_CODE_INSTALL_DOWNLOADED_UPDATE_SUPPORTED and above"
+) : RuntimeException()
+
 public class BazaarIsNotInstalledException(
     override val message: String = "Bazaar is not installed in your device!"
 ) : RuntimeException()

@@ -13,3 +13,7 @@ internal const val BAZAAR_ERROR_RESULT = -1L
 
 internal const val BAZAAR_CODE_REMOTE_VERSION_SUPPORTED = 2400700
 internal const val BAZAAR_CODE_AUTO_UPDATE_SUPPORTED = 2600200
+
+internal const val BAZAAR_THIRD_PARTY_INSTALL_UPDATE = "bazaar://autoupdate/install?id="
+
+internal const val BAZAAR_CODE_INSTALL_DOWNLOADED_UPDATE_SUPPORTED = 2700400
