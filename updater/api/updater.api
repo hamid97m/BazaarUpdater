@@ -84,6 +84,7 @@ public final class com/farsitel/bazaar/updater/BazaarAutoUpdater {
 	public static final fun enableAutoUpdate (Landroid/content/Context;)V
 	public static final fun getLastAutoUpdateState (Landroid/content/Context;Lcom/farsitel/bazaar/updater/OnAutoUpdateResult;)V
 	public final synthetic fun getLastAutoUpdateState (Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;Lcom/farsitel/bazaar/updater/OnAutoUpdateResult;)V
+	public static final fun installDownloadedUpdate (Landroid/content/Context;)V
 	public static final fun isUpdateDownloaded (Landroid/content/Context;Lcom/farsitel/bazaar/updater/OnDownloadedUpdateResult;)V
 	public final synthetic fun isUpdateDownloaded (Landroid/content/Context;Lkotlinx/coroutines/CoroutineScope;Lcom/farsitel/bazaar/updater/OnDownloadedUpdateResult;)V
 }

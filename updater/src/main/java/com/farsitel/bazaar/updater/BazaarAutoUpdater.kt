@@ -1,7 +1,9 @@
 package com.farsitel.bazaar.updater
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -84,6 +86,18 @@ public object BazaarAutoUpdater {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
             context.startActivity(intent)
+        }
+    }
+
+    @JvmStatic
+    public fun installDownloadedUpdate(context: Context) {
+        if (verifyBazaarIsInstalled(context)) {
+            val intent = buildInstallDownloadedUpdateIntent(context.packageName)
+            try {
+                context.startActivity(intent)
+            } catch (ignored: ActivityNotFoundException) {
+                // Installed Bazaar version does not support this deep link yet.
+            }
         }
     }
 
@@ -171,5 +185,16 @@ public object BazaarAutoUpdater {
     private fun releaseDownloadedUpdateService(context: Context) {
         downloadedUpdateConnection?.get()?.let { con -> context.unbindService(con) }
         downloadedUpdateConnection = null
+    }
+}
+
+@JvmSynthetic
+internal fun buildInstallDownloadedUpdateIntent(packageName: String): Intent {
+    return Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse("$BAZAAR_THIRD_PARTY_INSTALL_UPDATE$packageName"),
+    ).apply {
+        setPackage(BAZAAR_PACKAGE_NAME)
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
     }
 }
