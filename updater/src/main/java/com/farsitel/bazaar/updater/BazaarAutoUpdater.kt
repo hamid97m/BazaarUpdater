@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference
 public object BazaarAutoUpdater {
 
     private var connection: WeakReference<AutoUpdateServiceConnection>? = null
+    private var downloadedUpdateConnection: WeakReference<DownloadedUpdateServiceConnection>? = null
 
     @JvmStatic
     public fun getLastAutoUpdateState(
@@ -36,6 +37,35 @@ public object BazaarAutoUpdater {
             listener.onResult(AutoUpdateResult.Error(BazaarIsNotInstalledException()))
         } else {
             initService(
+                context = context,
+                scope = scope,
+                listener = listener,
+            )
+        }
+    }
+
+    @JvmStatic
+    public fun isUpdateDownloaded(
+        context: Context,
+        listener: OnDownloadedUpdateResult,
+    ) {
+        isUpdateDownloaded(
+            context = context,
+            scope = retrieveScope(context),
+            listener = listener,
+        )
+    }
+
+    @JvmSynthetic
+    public fun isUpdateDownloaded(
+        context: Context,
+        scope: CoroutineScope,
+        listener: OnDownloadedUpdateResult,
+    ) {
+        if (verifyBazaarIsInstalled(context).not()) {
+            listener.onResult(DownloadedUpdateResult.Error(BazaarIsNotInstalledException()))
+        } else {
+            initDownloadedUpdateService(
                 context = context,
                 scope = scope,
                 listener = listener,
@@ -104,5 +134,42 @@ public object BazaarAutoUpdater {
     private fun releaseService(context: Context) {
         connection?.get()?.let { con -> context.unbindService(con) }
         connection = null
+    }
+
+    private fun initDownloadedUpdateService(
+        context: Context,
+        scope: CoroutineScope,
+        listener: OnDownloadedUpdateResult,
+    ) {
+        downloadedUpdateConnection = WeakReference(
+            DownloadedUpdateServiceConnection(
+                packageName = context.packageName,
+                scope = scope,
+                bazaarVersionCode = getBazaarVersionCode(context),
+                onResult = { isDownloaded ->
+                    listener.onResult(DownloadedUpdateResult.Result(isDownloaded))
+                    releaseDownloadedUpdateService(context)
+                },
+                onError = { message ->
+                    listener.onResult(DownloadedUpdateResult.Error(message))
+                    releaseDownloadedUpdateService(context)
+                },
+            ),
+        )
+
+        val intent = Intent(BAZAAR_AUTO_UPDATE_INTENT)
+        intent.setPackage(BAZAAR_PACKAGE_NAME)
+        try {
+            downloadedUpdateConnection?.get()?.let { con ->
+                context.bindService(intent, con, Context.BIND_AUTO_CREATE)
+            }
+        } catch (e: Exception) {
+            releaseDownloadedUpdateService(context)
+        }
+    }
+
+    private fun releaseDownloadedUpdateService(context: Context) {
+        downloadedUpdateConnection?.get()?.let { con -> context.unbindService(con) }
+        downloadedUpdateConnection = null
     }
 }
