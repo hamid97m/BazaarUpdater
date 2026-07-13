@@ -3,7 +3,6 @@ package com.farsitel.bazaar.updater
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -189,10 +188,14 @@ public object BazaarAutoUpdater {
 }
 
 @JvmSynthetic
+internal fun buildInstallUri(packageName: String): String =
+    "$BAZAAR_THIRD_PARTY_INSTALL_UPDATE$packageName"
+
+@JvmSynthetic
 internal fun buildInstallDownloadedUpdateIntent(packageName: String): Intent {
     return Intent(
         Intent.ACTION_VIEW,
-        Uri.parse("$BAZAAR_THIRD_PARTY_INSTALL_UPDATE$packageName"),
+        buildInstallUri(packageName).toUri(),
     ).apply {
         setPackage(BAZAAR_PACKAGE_NAME)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
