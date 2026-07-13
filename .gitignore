@@ -55,3 +55,6 @@ app/build/*
 app/production
 app/release
 
+
+# Local git worktrees (superpowers:using-git-worktrees)
+.worktrees/
