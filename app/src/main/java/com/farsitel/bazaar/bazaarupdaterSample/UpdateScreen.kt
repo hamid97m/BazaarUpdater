@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
 import com.farsitel.bazaar.updater.AutoUpdateResult
+import com.farsitel.bazaar.updater.DownloadedUpdateResult
 import com.farsitel.bazaar.updater.UpdateResult
 
 @Composable
@@ -28,6 +29,8 @@ fun UpdateScreen(
     onUpdateClick: () -> Unit = {},
     onCheckVersionClick: () -> Unit = {},
     onAutoUpdateClick: () -> Unit = {},
+    onCheckDownloadedClick: () -> Unit = {},
+    onInstallDownloadedClick: () -> Unit = {},
 ) {
     Column(
         modifier = modifier.fillMaxSize(),
@@ -70,6 +73,32 @@ fun UpdateScreen(
             )
 
             null -> {}
+        }
+
+        when (val state = updateState.value?.downloadedUpdateResult) {
+            is DownloadedUpdateResult.Error -> ErrorView(
+                message = "Downloaded check error: ${state.throwable.message.orEmpty()}",
+            )
+
+            is DownloadedUpdateResult.Result -> {
+                if (state.isDownloaded()) {
+                    UpdateButton(text = "Install Downloaded Update") {
+                        onInstallDownloadedClick()
+                    }
+                } else {
+                    Text(
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp),
+                        text = "No downloaded update pending",
+                    )
+                }
+            }
+
+            null -> UpdateButton(text = "Check Downloaded Update") {
+                onCheckDownloadedClick()
+            }
         }
     }
 }
