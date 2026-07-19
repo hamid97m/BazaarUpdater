@@ -3,4 +3,5 @@
     <string name="there_is_new_update_version">There is new update (version= %1$s)</string>
     <string name="check_update">Check Update!</string>
     <string name="your_application_is_updated">Your application is updated!</string>
+    <string name="auto_update_enable_description">Auto-update is enabled, and your app will receive updates daily, automatically</string>
 </resources>

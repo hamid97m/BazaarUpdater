@@ -15,13 +15,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import com.farsitel.bazaar.bazaarupdaterSample.referrer.ReferrerViewModel
 import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
+import com.farsitel.bazaar.updater.BazaarAutoUpdater
 import com.farsitel.bazaar.updater.BazaarUpdater
-import com.farsitel.bazaar.updater.UpdateResult
 
 class MainActivity : ComponentActivity() {
     private val referrerViewModel by viewModels<ReferrerViewModel>()
 
-    private val updateState = mutableStateOf<UpdateResult?>(null)
+    private val updateState = mutableStateOf(UpdateState())
+
+    override fun onResume() {
+        super.onResume()
+        checkAutoUpdateState()
+        referrerViewModel.onResume()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             updateState = updateState,
                             modifier = Modifier.padding(innerPadding),
                             onUpdateClick = ::updateApplication,
-                            onCheckVersionClick = ::checkUpdateState,
+                            onAutoUpdateClick = ::enableAutoUpdate,onCheckVersionClick = ::checkUpdateState,
                         )
                         ReferrerSdkInfo(
                             error = errorMessage,
@@ -54,14 +60,19 @@ class MainActivity : ComponentActivity() {
         BazaarUpdater.updateApplication(context = this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        referrerViewModel.onResume()
+    private fun enableAutoUpdate() {
+        BazaarAutoUpdater.enableAutoUpdate(context = this)
+    }
+
+    private fun checkAutoUpdateState() {
+        BazaarAutoUpdater.getLastAutoUpdateState(context = this) { result ->
+            updateState.value = updateState.value.copy(autoUpdateResult = result)
+        }
     }
 
     private fun checkUpdateState() {
         BazaarUpdater.getLastUpdateState(context = this) { result ->
-            updateState.value = result
+            updateState.value = updateState.value.copy(updateResult = result)
         }
     }
 }

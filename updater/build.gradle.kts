@@ -57,7 +57,7 @@ publishing {
         create("release", MavenPublication::class) {
             groupId = "com.farsitel.bazaar"
             artifactId = "updater"
-            version = "1.0.0-beta1"
+            version = "1.1.1-alpha1"
 
             afterEvaluate {
                 from(components["release"])
