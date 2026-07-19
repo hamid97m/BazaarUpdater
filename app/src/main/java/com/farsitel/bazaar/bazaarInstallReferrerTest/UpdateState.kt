@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample
+package com.farsitel.bazaar.bazaarInstallReferrerTest
 
 import com.farsitel.bazaar.updater.AutoUpdateResult
 import com.farsitel.bazaar.updater.UpdateResult

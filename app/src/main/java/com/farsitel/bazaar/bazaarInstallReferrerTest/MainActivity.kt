@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample
+package com.farsitel.bazaar.bazaarInstallReferrerTest
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,8 +13,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
-import com.farsitel.bazaar.bazaarupdaterSample.referrer.ReferrerViewModel
-import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
+import com.farsitel.bazaar.bazaarInstallReferrerTest.referrer.ReferrerViewModel
+import com.farsitel.bazaar.bazaarInstallReferrerTest.ui.theme.BazaarUpdaterSampleTheme
 import com.farsitel.bazaar.updater.BazaarAutoUpdater
 import com.farsitel.bazaar.updater.BazaarUpdater
 
@@ -39,12 +39,6 @@ class MainActivity : ComponentActivity() {
             BazaarUpdaterSampleTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(Modifier.padding(innerPadding)) {
-                        UpdateScreen(
-                            updateState = updateState,
-                            modifier = Modifier.padding(innerPadding),
-                            onUpdateClick = ::updateApplication,
-                            onAutoUpdateClick = ::enableAutoUpdate,onCheckVersionClick = ::checkUpdateState,
-                        )
                         ReferrerSdkInfo(
                             error = errorMessage,
                             logs = logs,

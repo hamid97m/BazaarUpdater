@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample
+package com.farsitel.bazaar.bazaarInstallReferrerTest
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
