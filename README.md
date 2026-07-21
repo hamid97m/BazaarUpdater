@@ -121,13 +121,16 @@ To check whether Auto Update is enabled for your application in Bazaar, use the 
 
 ```kotlin
 BazaarAutoUpdater.getLastAutoUpdateState(context = this) { result ->
-    when (result) {
-        is AutoUpdateResult.Error -> {
-            // Handle the error case
-            val errorMessage = result.getError()?.message
+    when (result.getState()) {
+        AutoUpdateState.ENABLED -> {
+            // Auto Update is active — nothing to do
         }
-        is AutoUpdateResult.Result -> {
-            val isEnabled = result.isEnable()
+        AutoUpdateState.DISABLED -> {
+            // Auto Update is supported but turned off — prompt the user to enable it
+        }
+        AutoUpdateState.NOT_SUPPORTED -> {
+            // Bazaar is not installed or needs to be updated to version 26.2.0+
+            val errorMessage = result.getError()?.message
         }
     }
 }
@@ -138,20 +141,34 @@ BazaarAutoUpdater.getLastAutoUpdateState(context = this) { result ->
 
 ```java
 BazaarAutoUpdater.getLastAutoUpdateState(context, result -> {
-    if (result.getError() != null) {
-        // Handle the error case
-        String errorMessage = result.getError().getMessage();
-    } else {
-        Boolean isEnabled = result.isEnable();
+    switch (result.getState()) {
+        case ENABLED:
+            // Auto Update is active — nothing to do
+            break;
+        case DISABLED:
+            // Auto Update is supported but turned off — prompt the user to enable it
+            break;
+        case NOT_SUPPORTED:
+            // Bazaar is not installed or needs to be updated to version 26.2.0+
+            String errorMessage = result.getError().getMessage();
+            break;
     }
 });
 ```
 
 </details>
 
+#### Auto Update States
+
+##### 1. `ENABLED`: Auto Update is active. Bazaar will automatically download and install updates daily.
+
+##### 2. `DISABLED`: Bazaar supports Auto Update (version 26.2.0+) but the user has not enabled it. Call `enableAutoUpdate()` to prompt the user.
+
+##### 3. `NOT_SUPPORTED`: Bazaar is not installed or its version is below 26.2.0. Use `result.getError()` for details.
+
 ### Enable Auto Update
 
-To enable Auto Update for your application, simply call the following method:
+To open the Bazaar Auto Update settings page for your application, call:
 
 ```kotlin
 BazaarAutoUpdater.enableAutoUpdate(context = context)

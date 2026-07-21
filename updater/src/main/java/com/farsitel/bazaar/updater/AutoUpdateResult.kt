@@ -2,6 +2,12 @@
 
 package com.farsitel.bazaar.updater
 
+public enum class AutoUpdateState {
+    ENABLED,
+    DISABLED,
+    NOT_SUPPORTED,
+}
+
 public sealed class AutoUpdateResult {
     public data class Result(
         @JvmSynthetic
@@ -10,6 +16,19 @@ public sealed class AutoUpdateResult {
 
     public data class Error(val throwable: Throwable) : AutoUpdateResult()
 
+    public fun getState(): AutoUpdateState {
+        return when {
+            this is Result && isEnable -> AutoUpdateState.ENABLED
+            this is Result -> AutoUpdateState.DISABLED
+            else -> AutoUpdateState.NOT_SUPPORTED
+        }
+    }
+
+    @Deprecated(
+        message = "Use getState() instead. isEnable() returns false for both DISABLED and NOT_SUPPORTED states, making them indistinguishable.",
+        replaceWith = ReplaceWith("getState()"),
+        level = DeprecationLevel.ERROR,
+    )
     public fun isEnable(): Boolean {
         return this is Result && isEnable
     }
@@ -20,7 +39,11 @@ public sealed class AutoUpdateResult {
 }
 
 public inline fun AutoUpdateResult.doOnResult(call: (Boolean) -> Unit): AutoUpdateResult {
-    if (isEnable()) call(isEnable())
+    when (getState()) {
+        AutoUpdateState.ENABLED -> call(true)
+        AutoUpdateState.DISABLED -> call(false)
+        AutoUpdateState.NOT_SUPPORTED -> Unit
+    }
     return this
 }
 

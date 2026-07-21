@@ -1,5 +1,6 @@
 package com.farsitel.bazaar.updater
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import androidx.core.net.toUri
@@ -53,7 +54,11 @@ public object BazaarAutoUpdater {
                 setPackage(BAZAAR_PACKAGE_NAME)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
             }
-            context.startActivity(intent)
+            try {
+                context.startActivity(intent)
+            } catch (ignored: ActivityNotFoundException) {
+                // Installed Bazaar version does not support this deep link yet.
+            }
         }
     }
 

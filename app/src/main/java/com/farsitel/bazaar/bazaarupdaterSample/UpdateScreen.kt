@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
-import com.farsitel.bazaar.updater.AutoUpdateResult
+import com.farsitel.bazaar.updater.AutoUpdateState
 import com.farsitel.bazaar.updater.UpdateResult
 
 @Composable
@@ -59,38 +59,23 @@ fun UpdateScreen(
             }
         }
 
-        when (val state = updateState.value?.autoUpdateResult) {
-            is AutoUpdateResult.Error -> ErrorView(
-                message = state.throwable.message.orEmpty(),
-            )
-
-            is AutoUpdateResult.Result -> AutoUpdate(
-                result = state,
-                onAutoUpdateClick = onAutoUpdateClick
-            )
-
+        when (val result = updateState.value?.autoUpdateResult) {
             null -> {}
-        }
-    }
-}
-
-@Composable
-fun AutoUpdate(
-    result: AutoUpdateResult,
-    modifier: Modifier = Modifier,
-    onAutoUpdateClick: () -> Unit = {},
-) {
-    if (result.isEnable()) {
-        Text(
-            textAlign = TextAlign.Center,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            text = stringResource(R.string.auto_update_enable_description),
-        )
-    } else {
-        UpdateButton(text = "Enable Autoupdate") {
-            onAutoUpdateClick()
+            else -> when (result.getState()) {
+                AutoUpdateState.ENABLED -> Text(
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
+                    text = stringResource(R.string.auto_update_enable_description),
+                )
+                AutoUpdateState.DISABLED -> UpdateButton(text = "Enable Autoupdate") {
+                    onAutoUpdateClick()
+                }
+                AutoUpdateState.NOT_SUPPORTED -> ErrorView(
+                    message = result.getError()?.message.orEmpty(),
+                )
+            }
         }
     }
 }
