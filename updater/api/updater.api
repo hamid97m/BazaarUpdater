@@ -49,6 +49,7 @@ public final class com/farsitel/bazaar/updater/-UpdateResult {
 
 public abstract class com/farsitel/bazaar/updater/AutoUpdateResult {
 	public final fun getError ()Ljava/lang/Throwable;
+	public final fun getState ()Lcom/farsitel/bazaar/updater/AutoUpdateState;
 	public final fun isEnable ()Z
 }
 
@@ -70,6 +71,14 @@ public final class com/farsitel/bazaar/updater/AutoUpdateResult$Result : com/far
 	public fun equals (Ljava/lang/Object;)Z
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/farsitel/bazaar/updater/AutoUpdateState : java/lang/Enum {
+	public static final field DISABLED Lcom/farsitel/bazaar/updater/AutoUpdateState;
+	public static final field ENABLED Lcom/farsitel/bazaar/updater/AutoUpdateState;
+	public static final field NOT_SUPPORTED Lcom/farsitel/bazaar/updater/AutoUpdateState;
+	public static fun valueOf (Ljava/lang/String;)Lcom/farsitel/bazaar/updater/AutoUpdateState;
+	public static fun values ()[Lcom/farsitel/bazaar/updater/AutoUpdateState;
 }
 
 public final class com/farsitel/bazaar/updater/BazaarAutoUpdater {
@@ -106,6 +115,13 @@ public abstract interface class com/farsitel/bazaar/updater/OnAutoUpdateResult {
 
 public abstract interface class com/farsitel/bazaar/updater/OnUpdateResult {
 	public abstract fun onResult (Lcom/farsitel/bazaar/updater/UpdateResult;)V
+}
+
+public final class com/farsitel/bazaar/updater/ServiceDisconnectionException : java/lang/RuntimeException {
+	public fun <init> (Landroid/content/ComponentName;Ljava/lang/String;)V
+	public synthetic fun <init> (Landroid/content/ComponentName;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getComponentName ()Landroid/content/ComponentName;
+	public fun getMessage ()Ljava/lang/String;
 }
 
 public final class com/farsitel/bazaar/updater/UnknownException : java/lang/RuntimeException {
