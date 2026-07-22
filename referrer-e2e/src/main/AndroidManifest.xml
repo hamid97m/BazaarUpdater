@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Allows the harness to resolve/launch other apps (Bazaar, the referrer
+         test app, the browser) on Android 11+ package-visibility. This is a
+         test-only APK, never shipped, so QUERY_ALL_PACKAGES is acceptable. -->
+    <uses-permission
+        android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
+
+    <queries>
+        <package android:name="com.farsitel.bazaar" />
+        <package android:name="com.farsitel.bazaar.bazaarInstallReferrerTest" />
+        <package android:name="com.android.chrome" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="false"
+        android:label="Referrer E2E"
+        tools:targetApi="31" />
+
+</manifest>
