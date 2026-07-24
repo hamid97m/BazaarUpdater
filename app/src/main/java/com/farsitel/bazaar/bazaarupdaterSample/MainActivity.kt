@@ -168,16 +168,13 @@ class MainActivity : ComponentActivity() {
 
                     // Optional
                     MetrixAnalytics.setUserIdListener {
-                        userIdState = "userIdState=$it"
+                        userIdState = "analyticsUserIdState=$it"
                     }
-                    MetrixAttribution.setUserIdListener {
-                        object : UserIdListener {
-                            override fun onUserIdReceived(userId: String) {
-                                // Replace with your logic
-                                userIdState = "userIdState=$userIdState"
-                            }
+                    MetrixAttribution.setUserIdListener(object : UserIdListener {
+                        override fun onUserIdReceived(userId: String) {
+                            userIdState = "attributionUserIdState=$userId"
                         }
-                    }
+                    })
 
                     // Optional
                     MetrixAttribution.setOnAttributionChangedListener(object :
