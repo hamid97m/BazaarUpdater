@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample.referrer
+package com.farsitel.bazaar.bazaarInstallReferrerTest.referrer
 
 import android.app.Application
 import android.util.Log

@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 rootProject.name = "BazaarupdaterSample"
 include(":app")
 include(":updater")
+include(":referrer-e2e")

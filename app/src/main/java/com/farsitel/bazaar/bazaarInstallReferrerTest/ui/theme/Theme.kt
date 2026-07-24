@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample.ui.theme
+package com.farsitel.bazaar.bazaarInstallReferrerTest.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample
+package com.farsitel.bazaar.bazaarInstallReferrerTest
 
 import android.os.Build
 import android.os.Bundle
@@ -43,8 +43,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.farsitel.bazaar.bazaarupdaterSample.referrer.ReferrerViewModel
-import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
+import com.farsitel.bazaar.bazaarInstallReferrerTest.referrer.ReferrerViewModel
+import com.farsitel.bazaar.bazaarInstallReferrerTest.ui.theme.BazaarUpdaterSampleTheme
 import com.farsitel.bazaar.updater.BazaarAutoUpdater
 import com.farsitel.bazaar.updater.BazaarUpdater
 import com.farsitel.bazaar.updater.UpdateResult

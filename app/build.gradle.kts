@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.farsitel.bazaar.bazaarupdaterSample"
+    namespace = "com.farsitel.bazaar.bazaarInstallReferrerTest"
     compileSdk = 34
     packaging {
         jniLibs {
@@ -12,7 +12,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId = "com.farsitel.bazaar.bazaarupdaterSample"
+        applicationId = "com.farsitel.bazaar.bazaarInstallReferrerTest"
         minSdk = 21
         targetSdk = 34
         versionCode = 17

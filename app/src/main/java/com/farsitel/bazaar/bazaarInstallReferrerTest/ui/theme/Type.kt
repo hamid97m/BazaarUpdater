@@ -1,4 +1,4 @@
-package com.farsitel.bazaar.bazaarupdaterSample.ui.theme
+package com.farsitel.bazaar.bazaarInstallReferrerTest.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

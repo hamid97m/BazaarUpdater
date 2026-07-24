@@ -13,6 +13,10 @@ material = "1.12.0"
 binary-compatibility-validator = "0.16.3"
 bazaar-referrer-sdk = "1.0.2"
 metrix = "2.7.1"
+uiautomator = "2.3.0"
+testRunner = "1.6.2"
+testRules = "1.6.1"
+testCoreKtx = "1.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +38,10 @@ material = { group = "com.google.android.material", name = "material", version.r
 bazaar-referrer-sdk = { group = "com.github.cafebazaar", name = "ReferrerSDK", version.ref = "bazaar-referrer-sdk" }
 metrix-analytics = { group = "ir.metrix.analytics", name = "metrix", version.ref = "metrix" }
 metrix-attribution = { group = "ir.metrix.attribution", name = "metrix", version.ref = "metrix" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRules" }
+androidx-test-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "testCoreKtx" }
 
 [plugins]
 maven-publish = { id = "maven-publish" }
@@ -42,4 +50,3 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binary-compatibility-validator" }
-

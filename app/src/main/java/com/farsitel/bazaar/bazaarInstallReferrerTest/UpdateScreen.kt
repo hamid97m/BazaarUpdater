@@ -1,10 +1,11 @@
-package com.farsitel.bazaar.bazaarupdaterSample
+package com.farsitel.bazaar.bazaarInstallReferrerTest
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.farsitel.bazaar.bazaarupdaterSample.ui.theme.BazaarUpdaterSampleTheme
+import com.farsitel.bazaar.bazaarInstallReferrerTest.ui.theme.BazaarUpdaterSampleTheme
 import com.farsitel.bazaar.updater.AutoUpdateResult
 import com.farsitel.bazaar.updater.UpdateResult
 
@@ -30,7 +31,7 @@ fun UpdateScreen(
     onAutoUpdateClick: () -> Unit = {},
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.wrapContentSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
