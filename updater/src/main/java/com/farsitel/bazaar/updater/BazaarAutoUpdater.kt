@@ -96,18 +96,20 @@ public object BazaarAutoUpdater {
 
         val intent = Intent(BAZAAR_AUTO_UPDATE_INTENT)
         intent.setPackage(BAZAAR_PACKAGE_NAME)
-        try {
+        runCatching {
             connection?.get()?.let { con ->
                 context.bindService(intent, con, Context.BIND_AUTO_CREATE)
             }
-        } catch (e: Exception) {
+        }.onFailure {
             releaseService(context)
         }
     }
 
     /** This is our function to un-binds this activity from our service.  */
     private fun releaseService(context: Context) {
-        connection?.get()?.let { con -> context.unbindService(con) }
+        runCatching {
+            connection?.get()?.let { con -> context.unbindService(con) }
+        }
         connection = null
     }
 }
