@@ -148,7 +148,7 @@ class ReferrerInstallFlowTest {
         log("PARSED_REFERRER=${parsedReferrer ?: "<null>"}")
         for (line in device.allVisibleTexts()) {
             // Collapse newlines so one TextView = one logcat line (easier to parse).
-            log("SCREEN: ${line.replace('\n', ' | ')}")
+            log("SCREEN: ${line.replace("\n", " | ")}")
         }
         log("===== REFERRER_SCREEN_END =====")
     }
