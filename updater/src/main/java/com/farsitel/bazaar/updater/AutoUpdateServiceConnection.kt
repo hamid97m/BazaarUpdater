@@ -16,6 +16,14 @@ internal class AutoUpdateServiceConnection(
     private val onError: ((Throwable) -> Unit),
 ) : ServiceConnection {
 
+    /**
+     * Tracks whether this specific connection is currently registered with the
+     * system. Guarded by the lock in [BazaarAutoUpdater] so release happens
+     * exactly once per instance.
+     */
+    @JvmField
+    internal var isBound: Boolean = false
+
     override fun onServiceConnected(name: ComponentName?, boundService: IBinder?) {
         try {
             val service = IAutoUpdateCheckService.Stub.asInterface(boundService)

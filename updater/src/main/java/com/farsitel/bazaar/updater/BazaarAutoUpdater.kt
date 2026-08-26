@@ -78,36 +78,55 @@ public object BazaarAutoUpdater {
         scope: CoroutineScope,
         listener: OnAutoUpdateResult,
     ) {
-        connection = WeakReference(
-            AutoUpdateServiceConnection(
-                packageName = context.packageName,
-                scope = scope,
-                bazaarVersionCode = getBazaarVersionCode(context),
-                onResult = { isEnable ->
-                    listener.onResult(AutoUpdateResult.Result(isEnable))
-                    releaseService(context)
-                },
-                onError = { message ->
-                    listener.onResult(AutoUpdateResult.Error(message))
-                    releaseService(context)
-                },
-            ),
+        lateinit var con: AutoUpdateServiceConnection
+        con = AutoUpdateServiceConnection(
+            packageName = context.packageName,
+            scope = scope,
+            bazaarVersionCode = getBazaarVersionCode(context),
+            onResult = { isEnable ->
+                listener.onResult(AutoUpdateResult.Result(isEnable))
+                releaseService(context, con)
+            },
+            onError = { message ->
+                listener.onResult(AutoUpdateResult.Error(message))
+                releaseService(context, con)
+            },
         )
+        connection = WeakReference(con)
 
         val intent = Intent(BAZAAR_AUTO_UPDATE_INTENT)
         intent.setPackage(BAZAAR_PACKAGE_NAME)
         try {
-            connection?.get()?.let { con ->
-                context.bindService(intent, con, Context.BIND_AUTO_CREATE)
-            }
+            context.bindService(intent, con, Context.BIND_AUTO_CREATE)
+            // From here on the connection is registered with the system and
+            // must be released exactly once via unbindService.
+            synchronized(this) { con.isBound = true }
         } catch (e: Exception) {
-            releaseService(context)
+            releaseService(context, con)
         }
     }
 
-    /** This is our function to un-binds this activity from our service.  */
-    private fun releaseService(context: Context) {
-        connection?.get()?.let { con -> context.unbindService(con) }
-        connection = null
+    /**
+     * Un-binds the given connection from our service. Safe to call more than
+     * once, and from multiple threads, for the same or overlapping connections:
+     * each connection is unbound exactly once, and a stale/never-registered
+     * connection is a no-op.
+     */
+    private fun releaseService(context: Context, con: AutoUpdateServiceConnection) {
+        val shouldUnbind = synchronized(this) {
+            val wasBound = con.isBound
+            con.isBound = false
+            if (connection?.get() === con) {
+                connection = null
+            }
+            wasBound
+        }
+        if (shouldUnbind) {
+            try {
+                context.unbindService(con)
+            } catch (ignored: IllegalArgumentException) {
+                // Already unbound, or the bind never fully registered.
+            }
+        }
     }
 }
