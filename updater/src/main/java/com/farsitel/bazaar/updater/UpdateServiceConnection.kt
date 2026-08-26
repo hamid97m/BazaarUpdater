@@ -20,15 +20,22 @@ internal class UpdateServiceConnection(
         try {
             val service = IUpdateCheckService.Stub.asInterface(boundService)
             scope.launch(Dispatchers.IO) {
-                val versionCode = if (bazaarVersionCode >= BAZAAR_CODE_REMOTE_VERSION_SUPPORTED) {
-                    service?.getRemoteVersionCode(packageName)
-                } else {
-                    service?.getVersionCode(packageName)
-                }
-                if (versionCode != null) {
-                    onResult(versionCode)
-                } else {
-                    onError(UnknownException())
+                try {
+                    val versionCode =
+                        if (bazaarVersionCode >= BAZAAR_CODE_REMOTE_VERSION_SUPPORTED) {
+                            service?.getRemoteVersionCode(packageName)
+                        } else {
+                            service?.getVersionCode(packageName)
+                        }
+                    if (versionCode != null) {
+                        onResult(versionCode)
+                    } else {
+                        onError(UnknownException())
+                    }
+                } catch (throwable: Throwable) {
+                    // e.g. DeadObjectException/RemoteException when the Bazaar
+                    // service process dies before the transaction completes.
+                    onError(throwable)
                 }
             }
         } catch (t: Throwable) {
